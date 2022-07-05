@@ -1,19 +1,22 @@
-import { useLayoutEffect, useRef } from 'react'
-import sync, { cancelSync } from 'framesync'
+import { useEffect, useLayoutEffect, useRef } from "react"
+import sync, { cancelSync } from "framesync"
+
+const isServer = typeof window === "undefined"
+const useIsomorphicLayoutEffect = isServer ? useEffect : useLayoutEffect
 
 export function useFrame(
   callback: (
     frame: Parameters<typeof sync.render>[0],
-    cancel: () => void
+    cancel: () => void,
   ) => void,
-  enabled: boolean = true
+  enabled: boolean = true,
 ) {
   const processRef = useRef<ReturnType<typeof sync.render>>()
   const callbackRef = useRef<any>()
 
   callbackRef.current = callback
 
-  useLayoutEffect(() => {
+  useIsomorphicLayoutEffect(() => {
     const cancel = () => process && cancelSync.render(process)
     let process = processRef.current
 
