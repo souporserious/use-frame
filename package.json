@@ -1,0 +1,53 @@
+{
+  "name": "use-frame",
+  "version": "0.1.0",
+  "description": "Sync animation frames in React.",
+  "main": "dist/index.js",
+  "module": "dist/esm/index.js",
+  "typings": "dist/index.d.ts",
+  "sideEffects": false,
+  "files": [
+    "dist",
+    "index.ts"
+  ],
+  "scripts": {
+    "prepublishOnly": "pnpm build",
+    "build": "tsup index.ts --dts --format esm,cjs --legacy-output",
+    "dev": "pnpm build --watch --sourcemap",
+    "test": "jest",
+    "test:watch": "jest --watch"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/souporserious/use-frame"
+  },
+  "keywords": [
+    "react",
+    "hooks",
+    "animation",
+    "frame",
+    "request-animation-frame"
+  ],
+  "author": "Travis Arnold <travis@souporserious.com> (http://souporserious.com)",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/souporserious/use-frame/issues"
+  },
+  "homepage": "https://github.com/souporserious/use-frame",
+  "peerDependencies": {
+    "react": ">16.8.0"
+  },
+  "devDependencies": {
+    "@types/jest": "^28.1.4",
+    "@types/node": "^18.0.0",
+    "@types/react": "^18.0.14",
+    "@types/react-dom": "^18.0.5",
+    "jest": "^28.1.2",
+    "react": "^18.2.0",
+    "tsup": "^6.1.2",
+    "typescript": "^4.7.4"
+  },
+  "dependencies": {
+    "framesync": "^6.1.0"
+  }
+}
