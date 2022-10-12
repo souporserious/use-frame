@@ -12,35 +12,35 @@ export function useFrame(
     /** Cancel the current scheduled frame. */
     cancel: () => void
 
-    /** The time elapsed since mounting or re-enabling. */
+    /** Time since last frame (in milliseconds). */
+    delta: number
+
+    /** Time elapsed since mounting or re-enabling. */
     elapsed: number
 
-    /** Data about the current frame. */
-    frame: {
-      delta: number
-      timestamp: number
-    }
+    /** Timestamp of the current frame. */
+    timestamp: number
   }) => void,
   {
     enabled = true,
-    once = true,
+    once = false,
     type = "update",
   }: {
     /** Whether or not the frame callback should run. */
-    enabled: boolean
+    enabled?: boolean
 
     /** Only runs the scheduled frame one time. */
-    once: boolean
+    once?: boolean
 
     /** The priority of execution across a frame. */
-    type:
+    type?:
       | "postRender"
       | "postUpdate"
       | "preRender"
       | "read"
       | "render"
       | "update"
-  },
+  } = {},
 ) {
   const callbackRef = useRef<any>()
 
@@ -54,8 +54,6 @@ export function useFrame(
     let initialTimestamp: number | null = null
     let process: any
 
-    cancel()
-
     if (enabled) {
       process = sync[type](({ delta, timestamp }) => {
         if (!initialTimestamp) {
@@ -63,9 +61,10 @@ export function useFrame(
         }
 
         callbackRef.current({
-          cancel,
           elapsed: timestamp - initialTimestamp,
-          frame: { delta, timestamp },
+          cancel,
+          delta,
+          timestamp,
         })
       }, !once)
     }
